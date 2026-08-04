@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salek Navigation</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Salek</p>
+          <h1>Navigation made simple</h1>
+          <p class="hero-copy">
+            Start with a friendly route planner that feels like a real navigation assistant.
+          </p>
+        </div>
+        <div class="hero-badge">Live route</div>
+      </header>
+
+      <main class="content-grid">
+        <section class="panel controls">
+          <h2>Plan your route</h2>
+          <label>
+            <span>Start</span>
+            <select id="origin"></select>
+          </label>
+          <label>
+            <span>Destination</span>
+            <select id="destination"></select>
+          </label>
+          <div class="action-row">
+            <button id="planBtn">Plan route</button>
+            <button id="startBtn" class="secondary">Start trip</button>
+          </div>
+          <div class="meta-cards">
+            <div>
+              <strong id="distanceLabel">--</strong>
+              <span>Distance</span>
+            </div>
+            <div>
+              <strong id="timeLabel">--</strong>
+              <span>ETA</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel map-panel">
+          <div class="map-header">
+            <div>
+              <p class="eyebrow">Live map</p>
+              <h3 id="routeTitle">Choose a route</h3>
+            </div>
+            <div id="statusBadge" class="status-badge">Ready</div>
+          </div>
+          <div class="map-card">
+            <div class="map-grid">
+              <div class="map-road road-a"></div>
+              <div class="map-road road-b"></div>
+              <div class="map-road road-c"></div>
+              <div class="map-marker start-marker">A</div>
+              <div class="map-marker end-marker">B</div>
+              <div class="route-line" id="routeLine"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <section class="panel directions-panel">
+        <div class="directions-header">
+          <h2>Turn-by-turn directions</h2>
+          <p id="summaryText">Pick a destination to see nearby guidance.</p>
+        </div>
+        <ol id="directionsList"></ol>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
