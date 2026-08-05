@@ -55,14 +55,8 @@
             <div id="statusBadge" class="status-badge">Ready</div>
           </div>
           <div class="map-card">
-            <div class="map-grid">
-              <div class="map-road road-a"></div>
-              <div class="map-road road-b"></div>
-              <div class="map-road road-c"></div>
-              <div class="map-marker start-marker">A</div>
-              <div class="map-marker end-marker">B</div>
-              <div class="route-line" id="routeLine"></div>
-            </div>
+            <div id="map" class="map"></div>
+            <p id="mapStatus" class="map-status">Loading Google Maps…</p>
           </div>
         </section>
       </main>
@@ -77,5 +71,6 @@
     </div>
 
     <script src="app.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
   </body>
 </html>

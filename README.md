@@ -9,10 +9,35 @@ A simple starter navigation app built with plain HTML, CSS, and JavaScript.
 - A visual route map preview
 
 ## Run locally
-Open index.html in your browser, or serve the folder with a simple static server:
+Open `index.html` in your browser, or use one of the local server options below.
+
+### Google Maps API
+To see the live map, replace `YOUR_GOOGLE_MAPS_API_KEY` in `index.html` with a real Google Maps JavaScript API key.
+
+### With npm
+Install the local dependencies once:
+
+```bash
+npm install
+```
+
+Run the app:
+
+```bash
+npm start
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000/
+```
+
+### Without npm
+Use Python's built-in static server:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then visit http://127.0.0.1:8000/.
+Then visit `http://127.0.0.1:8000/`.

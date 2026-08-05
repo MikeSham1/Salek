@@ -7,6 +7,15 @@ const places = [
   "Sunset Plaza"
 ];
 
+const placeCoordinates = {
+  "Downtown Hub": { lat: 40.758, lng: -73.9855 },
+  "Riverside Cafe": { lat: 40.762, lng: -73.9712 },
+  "North Station": { lat: 40.782, lng: -73.9747 },
+  "Harbor Point": { lat: 40.728, lng: -74.0013 },
+  "Green Park": { lat: 40.742, lng: -73.9859 },
+  "Sunset Plaza": { lat: 40.769, lng: -73.9586 }
+};
+
 const routes = {
   "Downtown Hub|Riverside Cafe": {
     title: "Downtown to Riverside",
@@ -54,9 +63,12 @@ const timeLabel = document.getElementById("timeLabel");
 const summaryText = document.getElementById("summaryText");
 const directionsList = document.getElementById("directionsList");
 const statusBadge = document.getElementById("statusBadge");
-const routeLine = document.getElementById("routeLine");
+const mapStatus = document.getElementById("mapStatus");
 const planBtn = document.getElementById("planBtn");
 const startBtn = document.getElementById("startBtn");
+let mapInstance = null;
+let startMarker = null;
+let destinationMarker = null;
 
 function populatePlaces() {
   places.forEach((place) => {
@@ -71,6 +83,47 @@ function populatePlaces() {
   destinationSelect.value = "Riverside Cafe";
 }
 
+function updateMapView() {
+  if (!window.google?.maps || !mapInstance) {
+    if (mapStatus) {
+      mapStatus.textContent = "Replace YOUR_GOOGLE_MAPS_API_KEY with a real key to view the live map.";
+    }
+    return;
+  }
+
+  const originLocation = placeCoordinates[originSelect.value] || placeCoordinates["Downtown Hub"];
+  const destinationLocation = placeCoordinates[destinationSelect.value] || placeCoordinates["Riverside Cafe"];
+
+  if (!startMarker) {
+    startMarker = new window.google.maps.Marker({
+      position: originLocation,
+      map: mapInstance,
+      title: originSelect.value
+    });
+  } else {
+    startMarker.setPosition(originLocation);
+  }
+
+  if (!destinationMarker) {
+    destinationMarker = new window.google.maps.Marker({
+      position: destinationLocation,
+      map: mapInstance,
+      title: destinationSelect.value
+    });
+  } else {
+    destinationMarker.setPosition(destinationLocation);
+  }
+
+  const bounds = new window.google.maps.LatLngBounds();
+  bounds.extend(originLocation);
+  bounds.extend(destinationLocation);
+  mapInstance.fitBounds(bounds);
+
+  if (mapStatus) {
+    mapStatus.textContent = `Showing ${originSelect.value} to ${destinationSelect.value}`;
+  }
+}
+
 function renderRoute() {
   const key = `${originSelect.value}|${destinationSelect.value}`;
   const route = routes[key];
@@ -82,7 +135,6 @@ function renderRoute() {
     summaryText.textContent = "Choose two different stops to generate a route.";
     directionsList.innerHTML = "";
     statusBadge.textContent = "Ready";
-    routeLine.style.width = "0%";
     return;
   }
 
@@ -94,7 +146,7 @@ function renderRoute() {
     .map((step) => `<li>${step}</li>`)
     .join("");
   statusBadge.textContent = "Planned";
-  routeLine.style.width = "78%";
+  updateMapView();
 }
 
 planBtn.addEventListener("click", () => {
@@ -109,10 +161,28 @@ startBtn.addEventListener("click", () => {
   }
 
   statusBadge.textContent = "En route";
-  routeLine.style.width = "92%";
 });
 
 originSelect.addEventListener("change", renderRoute);
 destinationSelect.addEventListener("change", renderRoute);
 populatePlaces();
 renderRoute();
+
+window.initMap = function () {
+  const mapElement = document.getElementById("map");
+  if (!mapElement || !window.google?.maps) {
+    if (mapStatus) {
+      mapStatus.textContent = "Google Maps could not be loaded. Replace YOUR_GOOGLE_MAPS_API_KEY with a real key.";
+    }
+    return;
+  }
+
+  mapInstance = new window.google.maps.Map(mapElement, {
+    center: placeCoordinates["Downtown Hub"],
+    zoom: 12,
+    mapTypeControl: false,
+    streetViewControl: false
+  });
+
+  updateMapView();
+};
