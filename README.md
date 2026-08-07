@@ -14,6 +14,9 @@ Open `index.html` in your browser, or use one of the local server options below.
 ### Google Maps API
 To see the live map, replace `YOUR_GOOGLE_MAPS_API_KEY` in `index.html` with a real Google Maps JavaScript API key.
 
+### Image recognition (client-side)
+The app now includes a client-side image recognition demo using TensorFlow.js and MobileNet. Open the app, choose an image from your device, and click `Predict` to see the top class predictions. This runs entirely in the browser — no server or credentials required.
+
 ### With npm
 Install the local dependencies once:
 

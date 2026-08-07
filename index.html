@@ -61,16 +61,41 @@
         </section>
       </main>
 
-      <section class="panel directions-panel">
+        <section class="panel directions-panel">
         <div class="directions-header">
           <h2>Turn-by-turn directions</h2>
           <p id="summaryText">Pick a destination to see nearby guidance.</p>
         </div>
         <ol id="directionsList"></ol>
       </section>
+
+        <section class="panel ml-panel">
+          <div class="directions-header">
+            <h2>Image Recognition (Client-side)</h2>
+            <p id="mlStatus">Model will load automatically.</p>
+          </div>
+
+          <div class="ml-body">
+            <label class="file-label">Select an image
+              <input id="imageInput" type="file" accept="image/*" />
+            </label>
+
+            <div class="ml-preview">
+              <img id="inputImage" alt="preview" />
+            </div>
+
+            <div class="action-row">
+              <button id="predictBtn">Predict</button>
+            </div>
+
+            <ol id="predictionsList" class="predictions"></ol>
+          </div>
+        </section>
     </div>
 
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
   </body>
 </html>

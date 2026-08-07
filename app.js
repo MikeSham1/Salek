@@ -168,6 +168,62 @@ destinationSelect.addEventListener("change", renderRoute);
 populatePlaces();
 renderRoute();
 
+// --- Image recognition (TensorFlow.js MobileNet) ---
+let mobilenetModel = null;
+const imageInput = document.getElementById('imageInput');
+const inputImage = document.getElementById('inputImage');
+const predictBtn = document.getElementById('predictBtn');
+const predictionsList = document.getElementById('predictionsList');
+const mlStatus = document.getElementById('mlStatus');
+
+async function loadMobileNet() {
+  try {
+    mlStatus.textContent = 'Loading MobileNet model...';
+    mobilenetModel = await mobilenet.load();
+    mlStatus.textContent = 'MobileNet loaded — try an image.';
+  } catch (err) {
+    mlStatus.textContent = 'Failed to load MobileNet.';
+    console.error('MobileNet load error', err);
+  }
+}
+
+imageInput?.addEventListener('change', (ev) => {
+  const file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  inputImage.src = url;
+  inputImage.onload = () => {
+    URL.revokeObjectURL(url);
+  };
+  predictionsList.innerHTML = '';
+});
+
+predictBtn?.addEventListener('click', async () => {
+  if (!mobilenetModel) {
+    mlStatus.textContent = 'Model not loaded yet.';
+    return;
+  }
+  if (!inputImage?.src) {
+    mlStatus.textContent = 'Choose an image first.';
+    return;
+  }
+
+  mlStatus.textContent = 'Running prediction...';
+  try {
+    const results = await mobilenetModel.classify(inputImage, 3);
+    predictionsList.innerHTML = results
+      .map(r => `<li><strong>${(r.probability*100).toFixed(1)}%</strong> — ${r.className}</li>`)
+      .join('');
+    mlStatus.textContent = 'Done';
+  } catch (err) {
+    mlStatus.textContent = 'Prediction failed.';
+    console.error('Prediction error', err);
+  }
+});
+
+// Start loading the model in background
+loadMobileNet();
+
 window.initMap = function () {
   const mapElement = document.getElementById("map");
   if (!mapElement || !window.google?.maps) {
