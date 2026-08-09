@@ -61,6 +61,17 @@
         </section>
       </main>
 
+      <section class="panel commit-panel">
+        <div class="directions-header">
+          <h2>Commit of the Day</h2>
+          <p id="commitDate">Loading...</p>
+        </div>
+        <p id="commitMessage">Get a quick commit idea for today: update the app, add image recognition, or improve the map.</p>
+        <div class="action-row">
+          <button id="refreshCommitBtn" class="secondary">New suggestion</button>
+        </div>
+      </section>
+
         <section class="panel directions-panel">
         <div class="directions-header">
           <h2>Turn-by-turn directions</h2>
@@ -93,6 +104,7 @@
         </section>
     </div>
 
+    <script src="config.js"></script>
     <script src="app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>

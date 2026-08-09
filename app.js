@@ -175,12 +175,45 @@ const inputImage = document.getElementById('inputImage');
 const predictBtn = document.getElementById('predictBtn');
 const predictionsList = document.getElementById('predictionsList');
 const mlStatus = document.getElementById('mlStatus');
+const commitDateLabel = document.getElementById('commitDate');
+const commitMessage = document.getElementById('commitMessage');
+const refreshCommitBtn = document.getElementById('refreshCommitBtn');
+
+const imageRecognitionApiKey = window.IMAGE_RECOGNITION_API_KEY || null;
+
+const commitIdeas = [
+  'Add a new route category and refactor route data.',
+  'Improve the map panel with custom markers and route styling.',
+  'Refine image recognition output and add confidence thresholds.',
+  'Add a daily summary badge to the homepage.',
+  'Add offline image caching for faster repeat predictions.'
+];
+
+function formatDate(date) {
+  return date.toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
+function updateCommitOfTheDay() {
+  const today = new Date();
+  const seed = today.getDate() + today.getMonth() + today.getFullYear();
+  const index = seed % commitIdeas.length;
+  commitDateLabel.textContent = formatDate(today);
+  commitMessage.textContent = commitIdeas[index];
+}
 
 async function loadMobileNet() {
   try {
     mlStatus.textContent = 'Loading MobileNet model...';
     mobilenetModel = await mobilenet.load();
-    mlStatus.textContent = 'MobileNet loaded — try an image.';
+    if (imageRecognitionApiKey && imageRecognitionApiKey !== 'YOUR_IMAGE_RECOGNITION_API_KEY') {
+      mlStatus.textContent = 'MobileNet loaded — your API key is ready for future recognition services.';
+    } else {
+      mlStatus.textContent = 'MobileNet loaded — future API key support is configured in config.js.';
+    }
   } catch (err) {
     mlStatus.textContent = 'Failed to load MobileNet.';
     console.error('MobileNet load error', err);
@@ -221,8 +254,11 @@ predictBtn?.addEventListener('click', async () => {
   }
 });
 
+refreshCommitBtn?.addEventListener('click', updateCommitOfTheDay);
+
 // Start loading the model in background
 loadMobileNet();
+updateCommitOfTheDay();
 
 window.initMap = function () {
   const mapElement = document.getElementById("map");
