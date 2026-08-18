@@ -66,6 +66,7 @@ const statusBadge = document.getElementById("statusBadge");
 const mapStatus = document.getElementById("mapStatus");
 const planBtn = document.getElementById("planBtn");
 const startBtn = document.getElementById("startBtn");
+const resetBtn = document.getElementById("resetBtn");
 let mapInstance = null;
 let startMarker = null;
 let destinationMarker = null;
@@ -161,6 +162,13 @@ startBtn.addEventListener("click", () => {
   }
 
   statusBadge.textContent = "En route";
+});
+
+resetBtn.addEventListener("click", () => {
+  originSelect.value = "Downtown Hub";
+  destinationSelect.value = "Riverside Cafe";
+  statusBadge.textContent = "Ready";
+  renderRoute();
 });
 
 originSelect.addEventListener("change", renderRoute);
